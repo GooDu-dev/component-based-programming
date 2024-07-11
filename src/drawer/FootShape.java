@@ -9,7 +9,11 @@ public class FootShape {
         return;
     }
 
-    public void drawAsEclipse(Eclipse e) {
+    public void setFoot(Foot foot) {
+        this.foot = foot;
+    }
+
+    public void drawAsEllipse(Ellipse e) {
         e.draw();
         return;
     }
