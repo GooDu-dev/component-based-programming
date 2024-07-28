@@ -1,3 +1,4 @@
-# custmailappquestion
-This is an exercise question for the class Component-Based Software Development.
-The student task is to fork this repository and complete the program.
+# football score observer
+
+This is an exercise answer for the class Component-Based Software Development.
+Implement score board with observer.
