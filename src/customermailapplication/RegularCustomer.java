@@ -10,12 +10,16 @@ package customermailapplication;
  *
  * @author sarun
  */
-//make this class a subclass of customer
+// make this class a subclass of customer
 public class RegularCustomer extends Customer {
+
+    public RegularCustomer() {
+
+    }
 
     @Override
     public String createMail() {
         return "Regular Customer";
     }
-    
+
 }
