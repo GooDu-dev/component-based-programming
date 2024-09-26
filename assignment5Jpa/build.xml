@@ -68,6 +68,16 @@
     the compile target as the regular run target does. Again, for a list of available 
     properties which you can use, check the target you are overriding in the
     nbproject/build-impl.xml file. 
-
     -->
+    <path id="classpath">
+        <fileset dir="lib">
+            <include name="javax.persistence-api-2.2.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile">
+        <javac srcdir="src" destdir="bin" includeantruntime="false">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
 </project>

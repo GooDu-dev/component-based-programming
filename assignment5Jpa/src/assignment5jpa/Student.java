@@ -5,6 +5,8 @@
 package assignment5jpa;
 
 import java.io.Serializable;
+
+import javax.naming.NameNotFoundException;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,15 +19,15 @@ import javax.persistence.Table;
 
 /**
  *
- * @author wutic
+ * @author goodu-dev
  */
 @Entity
 @Table(name = "STUDENT")
 @NamedQueries({
-    @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s"),
-    @NamedQuery(name = "Student.findById", query = "SELECT s FROM Student s WHERE s.id = :id"),
-    @NamedQuery(name = "Student.findByName", query = "SELECT s FROM Student s WHERE s.name = :name"),
-    @NamedQuery(name = "Student.findByGpa", query = "SELECT s FROM Student s WHERE s.gpa = :gpa")})
+        @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s"),
+        @NamedQuery(name = "Student.findById", query = "SELECT s FROM Student s WHERE s.id = :id"),
+        @NamedQuery(name = "Student.findByName", query = "SELECT s FROM Student s WHERE s.name = :name"),
+})
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,11 +36,14 @@ public class Student implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    @Column(name = "JOB")
+    private String job;
     @Column(name = "NAME")
     private String name;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "GPA")
-    private Double gpa;
+    @Column(name = "SALARY")
+    private int salary;
+    @Column(name = "DEPARTMENTID")
+    private Department department;
 
     public Student() {
     }
@@ -47,15 +52,12 @@ public class Student implements Serializable {
         this.id = id;
     }
 
-    public Student(String name, Double gpa) {
-        this.name = name;
-        this.gpa = gpa;
-    }
-
-    public Student(Integer id, String name, Double gpa) {
+    public Student(Integer id, String name, String job, int salary, int department_id) {
         this.id = id;
         this.name = name;
-        this.gpa = gpa;
+        this.job = job;
+        this.salary = salary;
+        setDepartmentByID(department_id);
     }
 
     public Integer getId() {
@@ -74,12 +76,50 @@ public class Student implements Serializable {
         this.name = name;
     }
 
-    public Double getGpa() {
-        return gpa;
+    public String getJob() {
+        return job;
     }
 
-    public void setGpa(Double gpa) {
-        this.gpa = gpa;
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public void setDepartmentByID(int department_id){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("assignment5JpaPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            Department department = em.find(Department.class, department_id);
+            if(department != null){
+                this.setDepartment(department);
+            }
+            else{
+                throw new Exception("Department not found");
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        }
+        finally{
+            em.close()
+        }
     }
 
     @Override
@@ -101,7 +141,11 @@ public class Student implements Serializable {
 
     @Override
     public String toString() {
-        return "assignment5jpa.Student[ id=" + id + " ]";
+        return "assignment6jpa.Student[ id=" + id + " ]";
     }
-    
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
 }

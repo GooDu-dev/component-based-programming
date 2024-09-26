@@ -12,23 +12,35 @@ import javax.persistence.Persistence;
  *
  * @author wutic
  */
-public class Assignment5Jpa {
+public class Assignment6Jpa {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Department d1 = new Department(1, "IT");
+        persist(d1);
+        Department d2 = new Department(2, "HR");
+        persist(d2);
         // Persist a new student
-        Student std = new Student(1, "MassiveCow", 3.25);
-        persist(std);
+        Student john = new Student(1, "John", "Network Admin", 56789, 1);
+        persist(john);
+        Student marry = new Student(2, "Marry", "HR Manager", 46789, 2);
+        persist(marry);
+        Student henry = new Student(3, "Henry", "Programmer", 67890, 1);
+        persist(henry);
+        Student clark = new Student(4, "Clark", "HR recuiter", 36789, 2);
+        persist(clark);
 
-        // Update the student
-        updateStudent(1, "UpdatedName", 3.75);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("assignment5JpaPU");
+        EntityManager em = emf.createEntityManager();
 
-        // Delete the student
-        deleteStudent(1);
+        System.out.println(em.findAll(Student.class));
+        System.out.println(em.findAll(Department.class));
+
+        em.close();
+
     }
-
 
     public static void persist(Object object) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("assignment5JpaPU");
